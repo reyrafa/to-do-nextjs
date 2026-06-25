@@ -1,3 +1,12 @@
+import LoginForm from "@/components/auth/login-form";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: 'Login'
+}
+
 export default function Login() {
-  return <div>Login Page test</div>;
+
+    return (
+        <LoginForm />
+    )
 }
