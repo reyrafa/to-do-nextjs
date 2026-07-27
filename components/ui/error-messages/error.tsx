@@ -5,7 +5,7 @@ type ErrorProps = {
         className?: string;
     }
 
-export default function RequiredInput({children, className}: ErrorProps){
+export default function Error({children, className}: ErrorProps){
     
     return(
         <span className={`${className} text-xs text-red-400 mt-1`}>{children}</span>

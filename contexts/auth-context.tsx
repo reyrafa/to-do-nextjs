@@ -18,6 +18,8 @@ type AuthContextType = {
     token: string | null;
     login: (token: string, user: User) => void;
     logout: () => void;
+    isAuthenticated: boolean;
+    isLoading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -29,6 +31,7 @@ export function AuthProvider({
 }) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
@@ -38,6 +41,7 @@ export function AuthProvider({
             setToken(storedToken);
             setUser(JSON.parse(storedUser));
         }
+        setIsLoading(false);
     }, []);
 
     function login(token: string, user: User) {
@@ -58,7 +62,7 @@ export function AuthProvider({
 
     return (
         <AuthContext.Provider
-            value={{ user, token, login, logout }}
+            value={{ user, token, login, logout, isLoading, isAuthenticated: !!token }}
         >
             {children}
         </AuthContext.Provider>
@@ -66,5 +70,11 @@ export function AuthProvider({
 }
 
 export function useAuth() {
-    return useContext(AuthContext)!;
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error(
+            "useAuth must be inside AuthProvider"
+        );
+    }
+    return context;
 }
