@@ -16,21 +16,161 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+==================================================================================
+=============== To Do List Application with AI integration(GROQ) =================
+==================================================================================
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+API endpoint : https://to-do-api-k5st.onrender.com/api
 
-## Learn More
+Login : {
+    route: '/v1/login',
+    method: POST,
+    body: {
+        email: (required, email) ,
+        password: (required)
+    },
+    success response: {
+        success: true,
+        message: User Log in successfully,
+        data: {
+            user: { 
+                user: array
+            },
+            token: **token**
+        },
+        status: 200
+    },
+    error response: {
+        success: false, 
+        message: credentials do not match our records,
+        status: 401
+    }
+}
 
-To learn more about Next.js, take a look at the following resources:
+Logout : {
+    route: '/v1/logout',
+    method: POST,
+    Authorization: Bearer Token,
+    success response: {
+        success: true,
+        message: User is successfully logged out.,
+        status: 200
+    },
+     error response: {
+   
+    }
+}
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Register : {
+    route: '/v1/register',
+    method: POST,
+    body: {
+        name: (string)
+        email: (required, email, unique) ,
+        password: (required, min: 8),
+        password_confirmation: (required)
+    },
+    success response: {
+        success: true,
+        message: User is created successfully,
+        data: {
+            user: array,
+        },
+        status: 200
+    },
+    error response: {
+        success: false, 
+        message: Validation failed,
+        errors: errors
+    }
+}
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create Task : {
+    route: '/v1/tasks',
+    method: POST,
+    Authorization: Bearer Token,
+    body: {
+        title: string
+    },
+    success response: {
+        success: true,
+        message: Task Created Successfully,
+        status: 201
+    },
+    error response: {
+        success: false, 
+        message: Validation failed,
+        errors: errors
+    }
+}
 
-## Deploy on Vercel
+Show my Tasks : {
+    route: '/v1/tasks',
+    method: GET,
+    Authorization: Bearer Token,
+    success response: {
+        data: tasks
+        status: 200
+    },
+    error response: {
+        
+    }
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Show a specific owned task : {
+    route: '/v1/tasks/{uuid}',
+    method: GET,
+    Authorization: Bearer Token,
+    success response: {
+        success: true,
+        message: Task successfully fetched,
+        data: tasks
+        status: 200
+    },
+     error response: {
+        success: false, 
+        message: Cannot be found,
+        status: 404
+    }
+}
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Update a specific owned task : {
+    route: '/v1/tasks/{uuid}',
+    method: PUT,
+    Authorization: Bearer Token,
+    Body: {
+        "title" : required, string,
+        "priority" : nullable, string | (low, medium, high),
+        "due_date" : nullable, date
+    },
+    success response: {
+        success: true,
+        message: Task updated successfully,
+        data: tasks
+        status: 200
+    },
+     error response: {
+        success: false, 
+        message: Validation Error,
+        status: 422
+    }
+}
+
+Delete a specific owned task : {
+    route: '/v1/tasks/delete/{uuid}',
+    method: POST,
+    Authorization: Bearer Token,
+    success response: {
+        success: true,
+        message: Task deleted successfully,
+        status: 200
+    },
+     error response: {
+        success: false, 
+        message: Not Found,
+        status: 404
+    }
+}
+
+
+
